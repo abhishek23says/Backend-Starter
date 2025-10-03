@@ -10,7 +10,7 @@ exports.addPermissionValidation = Joi.object({
 }).options({ allowUnknown: false });
 
 exports.updatePermissionValidation = Joi.object({
-  id: uuidRule,
+  permissionId: uuidRule,
   actionName: Joi.string().trim(),
   description: Joi.string().trim(),
   method: Joi.string().trim(),

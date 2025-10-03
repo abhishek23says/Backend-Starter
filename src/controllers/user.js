@@ -13,9 +13,8 @@ exports.registerUser = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
-  const id = req.params.id;
-  const userData = req.body;
-  const result = await userService.updateUser({id, userData});
+  
+  const result = await userService.updateUser({...req.params,...req.body});
   return response.created(res, result);
 };
 
@@ -25,8 +24,7 @@ exports.listUsers = async (req, res) => {
 };
 
 exports.getUserById = async (req, res) => {
-  const id = req.params.id;
-  const result = await userService.getUserById({id});
+  const result = await userService.getUserById(req.params);
   return response.ok(res, result);
 };
 

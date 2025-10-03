@@ -29,11 +29,11 @@ exports.fetchRoleDetails = async({page = 1 , limit = 10 , search}) => {
   return handleSuccess({ message: SuccessMesage.FETCHED("Role"), data: roleRecords}); 
 }; 
 
-exports.fetchRoleById = async({id}) => { 
+exports.fetchRoleById = async({roleId}) => { 
 
   const roleDetails = await findByPk({
     model: models.role,
-    id,
+    id:roleId,
     include: [
       { model: models.permission,
         as: "permissions",
@@ -46,18 +46,15 @@ exports.fetchRoleById = async({id}) => {
   return handleSuccess({message: SuccessMesage.FETCHED("Role"), data: roleDetails});
 }; 
 
-exports.updateRoleById = async({id, updatedBody}) => { 
-  const roleRecord = await findByPk({model: models.role, id});
-  throwIfBadRequestError({condition: !roleRecord , message: ErrorMessage.INVALID("Role Id")});
-
-  const updatedRoleRecord = await update({model: models.role, condition: { id }, updatedBody, individualHooks: true , returning: true}); 
-  throwIfInternalServerError({condition: !updatedRoleRecord[0] , message: ErrorMessage.SERVER_ERROR()});
+exports.updateRoleById = async({roleId, ...updatedBody}) => {
+  const updatedRoleRecord = await update({model: models.role, condition: { id:roleId }, updatedBody, individualHooks: true , returning: true}); 
+  throwIfInternalServerError({condition: !updatedRoleRecord[0] , message: ErrorMessage.INVALID()});
 
   return handleSuccess({message: SuccessMesage.UPDATED("Role"), data: updatedRoleRecord});
 }; 
 
-exports.deleteRoleById = async ({ id }) => {
-  const removedRole = await destroy({ model: models.role, condition: { id } });
+exports.deleteRoleById = async ({ roleId }) => {
+  const removedRole = await destroy({ model: models.role, condition: { id:roleId } });
   throwIfBadRequestError({ condition: !removedRole, message: ErrorMessage.INVALID("Role Id") });
 
   return handleSuccess({message: SuccessMesage.DELETED("Role")});

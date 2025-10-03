@@ -14,12 +14,18 @@ const {
 const { createEmailTemplateValidation, updateEmailTemplateValidation } = require("../validators/emailTemplate");
 const { nameValidation, idValidation } = require("../validators/commonValidators");
 
-
+// create
 router.post('/' ,checkAuth,/* checkPermission,*/ validate(createEmailTemplateValidation), errorWrapper(addEmailTemplate));
+
+// Read
 router.get('/', checkAuth, /* checkPermission,*/ errorWrapper(listEmailTemplates));
-router.get('/:id', checkAuth, /* checkPermission,*/ errorWrapper(getTemplateById));
-router.get('/name/:name', checkAuth, /* checkPermission,*/ validate(nameValidation), errorWrapper(getTemplateByName));
-router.put('/:id', checkAuth, /* checkPermission,*/ errorWrapper(updateTemplateById));
-router.delete('/:id', checkAuth, /* checkPermission,*/errorWrapper(removeTemplateById));
+router.get('/:emailTemplateId', checkAuth, /* checkPermission,*/ errorWrapper(getTemplateById));
+router.get('/name/:emailTemplateName', checkAuth, /* checkPermission,*/ /* validate(nameValidation), */errorWrapper(getTemplateByName));
+
+// Update
+router.put('/:emailTemplateId', checkAuth, /* checkPermission,*/ errorWrapper(updateTemplateById));
+
+// Delete
+router.delete('/:emailTemplateId', checkAuth, /* checkPermission,*/errorWrapper(removeTemplateById));
 
 module.exports = router;

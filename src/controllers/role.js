@@ -18,20 +18,16 @@ exports.retrieveRole = async(req, res) => {
 }; 
 
 exports.retrieveRoleById = async(req, res) => { 
-  const { id } = req.params; 
-  const result = await fetchRoleById({id}); 
+  const result = await fetchRoleById(req.params); 
   return response.ok(res, result); 
 }; 
 
 exports.modifyRole = async(req, res) => { 
-  const { id } = req.params; 
-  const updatedBody = req.body;
-  const result = await updateRoleById({id, updatedBody}); 
+  const result = await updateRoleById({...req.params, ...req.body}); 
   return response.ok(res, result); 
 }; 
 
 exports.removeRole = async(req, res) => { 
-  const { id } = req.params; 
-  const result = await deleteRoleById({id}); 
+  const result = await deleteRoleById(req.params); 
   return response.ok(res, result); 
 }; 

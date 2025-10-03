@@ -19,15 +19,13 @@ exports.retrieveRolePermission = async(req, res) => {
 }; 
 
 exports.retrieveRolePermissionById = async(req, res) => { 
-  const { id } = req.params; 
-  const result = await fetchRolePermissionById({id}); 
+  
+  const result = await fetchRolePermissionById(req.params); 
   return response.ok(res, result); 
 }; 
 
 exports.modifyRolePermission = async(req, res) => { 
-  const { id } = req.params; 
-  const { roleId, permissionId } = req.body;
-  const result = await updateRolePermissionById({id,updateData:{roleId, permissionId }}); 
+  const result = await updateRolePermissionById({...req.params,...req.body}); 
   return response.ok(res, result); 
 }; 
 

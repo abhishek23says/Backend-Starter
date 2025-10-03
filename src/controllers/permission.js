@@ -18,19 +18,17 @@ exports.retrievePermission = async(req, res) => {
 }; 
 
 exports.retrievePermissionById = async(req, res) => { 
-  const { id } = req.params; 
-const result = await fetchPermissionById({id}); 
+const result = await fetchPermissionById(req.params); 
   return response.ok(res, result); 
 }; 
 
 exports.modifyPermission = async(req, res) => { 
-  const { id } = req.params; 
-  const result = await updatePermissionById({id, updateData:req.body}); 
+
+  const result = await updatePermissionById({...req.params, updateData:req.body}); 
   return response.ok(res, result); 
 }; 
 
 exports.removePermission = async(req, res) => { 
-  const { id } = req.params; 
-  const result = await deletePermissionById({id}); 
+  const result = await deletePermissionById(req.params); 
   return response.ok(res, result); 
 }; 

@@ -52,9 +52,9 @@ exports.listEmailTemplates = async ({ page = 1, limit = 10 }) => {
     model: models.emailTemplate,
     ...getPagination({ page, limit }),
   }); 
-
+ console.log(templateRecords)
   throwIfNoDataFoundError({
-    condition: !templateRecords || templateRecords.length === 0,
+    condition: templateRecords || templateRecords.length === 0,
     message: ErrorMessage.NOT_FOUND("Email Templates"),
   });
 
@@ -65,10 +65,10 @@ exports.listEmailTemplates = async ({ page = 1, limit = 10 }) => {
 };
 
 // ✅ Get template by ID
-exports.getTemplateById = async ({ id }) => {
+exports.getTemplateById = async ({ emailTemplateId}) => {
   const templateRecord = await findByPk({
     model: models.emailTemplate,
-    id,
+    id:emailTemplateId,
   });
 
   throwIfBadRequestError({
@@ -83,10 +83,10 @@ exports.getTemplateById = async ({ id }) => {
 };
 
 // ✅ Get template by Name
-exports.getTemplateByName = async ({ name }) => {
+exports.getTemplateByName = async ({ emailTemplateName }) => {
   const templateRecord = await findOne({
     model: models.emailTemplate,
-    condition: { name },
+    condition: { name:emailTemplateName },
   });
 
   throwIfBadRequestError({
@@ -101,34 +101,27 @@ exports.getTemplateByName = async ({ name }) => {
 };
 
 // ✅ Update template by ID
-exports.updateTemplateById = async ({ id, updateBody }) => {
-  const templateRecord = await findByPk({ model: models.emailTemplate, id });
-
-  throwIfBadRequestError({
-    condition: !templateRecord,
-    message: ErrorMessage.INVALID("Email Template Id"),
-  });
-console.log(updateBody);
+exports.updateTemplateById = async ({ emailTemplateId, updateBody }) => {
   const updatedRecord = await update({
     model: models.emailTemplate,
-    condition: { id },
+    condition: { id:emailTemplateId},
     updatedBody: updateBody,
     individualHooks: true,
   });
 
   throwIfInternalServerError({
     condition: !updatedRecord[0],
-    message: ErrorMessage.SERVER_ERROR(),
+    message: ErrorMessage.INVALID(),
   });
 
   return handleSuccess({ message: SuccessMesage.UPDATED(message) });
 };
 
 // ✅ Delete template by ID
-exports.removeTemplateById = async ({ id }) => {
+exports.removeTemplateById = async ({emailTemplateId }) => {
   const removedTemplate = await destroy({
     model: models.emailTemplate,
-    condition: { id },
+    condition: { id:emailTemplateId },
   });
 
   throwIfBadRequestError({

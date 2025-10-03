@@ -14,14 +14,16 @@ const {
 } = require('../controllers/user');
 const { validation_types_enums } = require("../../utils/enums");
 
-
+// create
 router.post( "/", validate({ schema: createUserValidation, type: validation_types_enums.body }), errorWrapper(createUser));
 
-router.put( "/:id", checkAuth, checkPermission, validate({ schema: updateUserValidation, type: validation_types_enums.params_body }), errorWrapper(updateUser));
-
+// read
 router.get('/', checkAuth, checkPermission, errorWrapper(listUsers));
-router.get('/:id', checkAuth, checkPermission, errorWrapper(getUserById));
+router.get('/:userId', checkAuth, checkPermission, errorWrapper(getUserById));
 
-router.delete('/:id', checkAuth, checkPermission, errorWrapper(removeUser));
+//update 
+router.put( "/:userId", checkAuth, checkPermission, validate({ schema: updateUserValidation, type: validation_types_enums.params_body }), errorWrapper(updateUser));
+
+router.delete('/:userId', checkAuth, checkPermission, errorWrapper(removeUser));
 
 module.exports = router;

@@ -7,7 +7,7 @@ exports.addRolePermissionValidation = Joi.object({
 }).options({ allowUnknown: false });
 
 exports.updateRolePermissionValidation = Joi.object({
-  id: uuidRule.messages({ "any.required": "ID is required" }),
+  rolePermissiond: uuidRule.messages({ "any.required": "ID is required" }),
   roleId: uuidRule,
   permissionId: uuidRule,
 }).options({ allowUnknown: false });

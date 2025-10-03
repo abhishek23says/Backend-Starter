@@ -15,7 +15,7 @@ exports.createPermission = async(permissionData) => {
   const addedPermission = await create({ model: models.permission, body: permissionData });
   throwIfInternalServerError({condition: !addedPermission , message: ErrorMessage.SERVER_ERROR()});
   
-  return handleSuccess({message: SuccessMesage.CREATED("Permission")}); 
+  return handleSuccess({message: SuccessMesage.CREATED("Permission"),data:addedPermission}); 
 }; 
 
 exports.fetchPermissionDetails = async ({ page = 1, limit = 10, search }) => {
@@ -39,25 +39,21 @@ exports.fetchPermissionDetails = async ({ page = 1, limit = 10, search }) => {
   return handleSuccess({ message: SuccessMesage.FETCHED("Permission"), data: permissionRecords });
 }; 
 
-exports.fetchPermissionById = async ({ id }) => {
-  const permissionRecord = await findByPk({ model: models.permission, id });
+exports.fetchPermissionById = async ({ permissionId }) => {
+  const permissionRecord = await findByPk({ model: models.permission, id:permissionId });
   throwIfBadRequestError({ condition: !permissionRecord, message: ErrorMessage.INVALID("Permission Id") });
   return handleSuccess({message: SuccessMesage.FETCHED("Permission"), data: permissionRecord});
 }; 
 
-exports.updatePermissionById = async({ id, updateData }) => { 
-
-  const permissionRecord = await findByPk({model: models.permission, id});
-  throwIfBadRequestError({condition: !permissionRecord , message: ErrorMessage.INVALID("Permission Id")});
-
-  const updatedRecord = await update({model: models.permission, condition: { id }, updatedBody: updateData , individualHooks: true});
-  throwIfInternalServerError({condition: !updatedRecord[0] , message: ErrorMessage.SERVER_ERROR()});
+exports.updatePermissionById = async({ permissionId, updateData }) => { 
+  const updatedRecord = await update({model: models.permission, condition: { id:permissionId }, updatedBody: updateData , individualHooks: true});
+  throwIfInternalServerError({condition: !updatedRecord[0] , message: ErrorMessage.INVALID()});
 
   return handleSuccess({message: SuccessMesage.UPDATED("Permission")}); 
 }; 
 
-exports.deletePermissionById = async({id}) => { 
-  const removedPermission = await destroy({model: models.permission, condition: { id }});  
+exports.deletePermissionById = async({permissionId}) => { 
+  const removedPermission = await destroy({model: models.permission, condition: { id:permissionId }});  
   throwIfBadRequestError({condition: !removedPermission , message: ErrorMessage.INVALID("Permission Id") });
   return handleSuccess({message: SuccessMesage.DELETED("Permission")}); 
 }; 

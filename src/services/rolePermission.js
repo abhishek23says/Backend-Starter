@@ -48,27 +48,19 @@ exports.fetchRolePermissionDetails = async ({ page = 1, limit = 10, fetchAll }) 
   });
 }; 
 
-exports.fetchRolePermissionById = async ({ id }) => {
-  const record = await findByPk({ model: models.rolePermission, id });
-  console.log(record);
+exports.fetchRolePermissionById = async ({ rolePermissionId}) => {
+  const record = await findByPk({ model: models.rolePermission, id:rolePermissionId });
   throwIfNoDataFoundError({
     condition: record,
     message: ErrorMessage.INVALID('Role Permission Id'),
   });
-  console.log(record);
   return handleSuccess({ message: SuccessMesage.FETCHED('Role Permission'), data: record });
 }; 
 
-exports.updateRolePermissionById = async ({ id, updateData }) => {
-  const existingRecord = await findByPk({ model: models.rolePermission, id });
-  throwIfNoDataFoundError({
-    condition: existingRecord,
-    message: ErrorMessage.INVALID('Role Permission Id'),
-  });
-
+exports.updateRolePermissionById = async ({ rolePermissionId, ...updateData }) => {
   const updatedRecord = await update({
     model: models.rolePermission,
-    condition: { id },
+    condition: { id:rolePermissionId },
     updatedBody: updateData,
     individualHooks: true,
   });
@@ -81,8 +73,8 @@ exports.updateRolePermissionById = async ({ id, updateData }) => {
   return handleSuccess({ message: SuccessMesage.UPDATED('Role Permission') });
 }; 
 
-exports.deleteRolePermissionById = async ({ id }) => {
-  const removedRecord = await destroy({ model: models.rolePermission, condition: { id } });
+exports.deleteRolePermissionById = async ({ rolePermissionId }) => {
+  const removedRecord = await destroy({ model: models.rolePermission, condition: { id:rolePermissionId } });
   throwIfNoDataFoundError({
     condition: removedRecord,
     message: ErrorMessage.INVALID('Role Permission Id'),

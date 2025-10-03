@@ -25,6 +25,18 @@ const idValidation = Joi.object({
   id: uuidRule,
 }).options({ allowUnknown: false });
 
+const roleIdValidation = Joi.object({
+  roleId: uuidRule,
+}).options({ allowUnknown: false });
+
+const permissionIdValidation = Joi.object({
+  permissionId: uuidRule,
+}).options({ allowUnknown: false });
+
+const rolePermissionIdValidation = Joi.object({
+  permissionId: uuidRule,
+}).options({ allowUnknown: false });
+
 const nameValidation = Joi.object({
   name: Joi.string().min(1).max(100).required(),
 }).options({ allowUnknown: false });
@@ -77,7 +89,11 @@ module.exports = {
   // validations
   idValidation,
   nameValidation,
+ 
   emailEnqueValidation,
   suspensionValidation,
   otpValidation,
+  roleIdValidation ,
+  permissionIdValidation,
+  rolePermissionIdValidation
 }

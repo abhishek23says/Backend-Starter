@@ -19,8 +19,7 @@ exports.listEmailTemplates = async (req, res) => {
 };
 
 exports.getTemplateById = async (req, res) => {
-  const {id} = req.params
-  const result = await getTemplateById({id});
+  const result = await getTemplateById(req.params);
   return response.ok(res, result);
 };
 
@@ -30,8 +29,8 @@ exports.getTemplateByName = async (req, res) => {
 };
 
 exports.updateTemplateById = async (req, res) => {
-  const id = req.params.id;
-  const result = await updateTemplateById({id, updateBody:{...req.body , updatedBy : req.userData.id}});
+
+  const result = await updateTemplateById({...req.params, updateBody:{...req.body , updatedBy : req.userData.id}});
   return response.ok(res, result);
 };
 

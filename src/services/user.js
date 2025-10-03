@@ -29,15 +29,9 @@ exports.createUser = async ({email , password}) => {
   })
 };
 
-exports.updateUser = async ({id, userData}) => {
-  
-  const userRecord = await findByPk({model: models.user , id});
-  console.log(userRecord);
-  // throw if user not found
-  throwIfNoDataFoundError({condition : userRecord , message: ErrorMessage.INVALID("UserId")})
-
-  const updatedUser = await update({model: models.user, condition: { id }, updatedBody: userData});
-  throwIfInternalServerError({condition: !updatedUser[0] , message: ErrorMessage.SERVER_ERROR() });
+exports.updateUser = async ({userId, ...userData}) => {
+  const updatedUser = await update({model: models.user, condition: { id:userId }, updatedBody: userData});
+  throwIfInternalServerError({condition: !updatedUser[0] , message: ErrorMessage.INVALID() });
 
   return handleSuccess({message: SuccessMesage.UPDATED("User")}) ;
 }
@@ -56,18 +50,18 @@ exports.listUsers = async ({page = 1 , limit = 10 }) => {
   return handleSuccess({message: SuccessMesage.FETCHED("Users") , data: userRecords})
 }
 
-exports.getUserById = async ({id})  => {
+exports.getUserById = async ({userId})  => {
   const userRecord = await findByPk({
     model: models.user,
-    id,
+    id:userId,
     attributes: { exclude: ["password", "updatedAt", "deletedAt"] },
   });
   throwIfBadRequestError({condition: !userRecord , message: ErrorMessage.INVALID("User Id")});
   return handleSuccess({message: SuccessMesage.FETCHED.message , data: userRecord});
 }
 
-exports.removeUser = async ({id}) => {
-  const deleteUser = await destroy({model: models.user, condition: { id }});
+exports.removeUser = async ({userId}) => {
+  const deleteUser = await destroy({model: models.user, condition: { id:userId }});
   throwIfBadRequestError({condition: !deleteUser , message: ErrorMessage.INVALID("User Id")});
   return handleSuccess({message: SuccessMesage.DELETED("User")});
 }
